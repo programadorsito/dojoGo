@@ -1,6 +1,6 @@
 # dojoGo
 <h1>Abrir pruebas</h1>
-<p>cd testing<p>
+<p><b>cd testing</p></b>
 <p><b>go run hello.go</b><p>
 <p><b>go test hello.go hello_test.go</p></b>
 
