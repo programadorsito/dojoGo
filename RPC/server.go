@@ -1,37 +1,29 @@
-package main
+package main 
 
 import (
-	"errors"
 	"fmt"
-	"math"
+	"os"
 	"net"
 	"net/rpc"
-	"os"
+	"math"
+	"errors"
 )
 
-type Args struct {
+type Args struct{
 	A, B int
 }
 
-type Response struct {
+type Response struct{
 	Quo, Res int
 }
 
-type Math byte
+type Math byte 
 
 func (m *Math) Add(args *Args, res *int) error {
 	*res = args.A + args.B
 	return nil
 }
 
-func (m *Math) Divide(args *Args, res *Response) error {
-	if args.B == 0 {
-		return errors.New("u're trying divide by zero")
-	}
-	res.Quo = args.A / args.B
-	res.Res = args.A % args.B
-	return nil
-}
 
 func (m *Math) Major(slice *[]int, res *int) error {
 	var major = math.MinInt32
@@ -55,9 +47,18 @@ func (m *Math) Minor(slice *[]int, res *int) error {
 	return nil
 }
 
-func checkingError(err error) {
-	if err != nil {
-		fmt.Printf("Error!! %v", err.Error())
+func (m *Math) Divide(args *Args, res *Response) error {
+	if args.B == 0 {
+		return errors.New("You are trying divide by zero")
+	}
+	res.Quo = args.A / args.B
+	res.Res = args.A % args.B
+	return nil
+}
+
+func checkError(err error){
+    if err != nil {
+		fmt.Println("Error! %v", err.Error())
 		os.Exit(1)
 	}
 }
@@ -66,11 +67,11 @@ func main() {
 	math := new(Math)
 	rpc.Register(math)
 	tcpAddr, err := net.ResolveTCPAddr("tcp", ":3233")
-	checkingError(err)
+	checkError(err)
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
 	defer listener.Close()
-	checkingError(err)
+	checkError(err)
 	fmt.Println("Running in port 3233")
 
 	for {
@@ -83,3 +84,4 @@ func main() {
 		go rpc.ServeConn(conn)
 	}
 }
+
