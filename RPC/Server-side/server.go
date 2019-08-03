@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"errors"
-	"os"
-	"net"
+	"fmt"
 	"math"
+	"net"
 	"net/rpc"
-	
+	"os"
 )
 
 type Args struct {
@@ -56,9 +55,9 @@ func (m *Math) Minor(slice *[]int, res *int) error {
 	return nil
 }
 
-func checkError(err error) {
+func checkingError(err error) {
 	if err != nil {
-		fmt.Printf("Error! %v", err.Error())
+		fmt.Printf("Error!! %v", err.Error())
 		os.Exit(1)
 	}
 }
@@ -67,19 +66,20 @@ func main() {
 	math := new(Math)
 	rpc.Register(math)
 	tcpAddr, err := net.ResolveTCPAddr("tcp", ":3233")
-	checkError(err)
+	checkingError(err)
 
 	listener, err := net.ListenTCP("tcp", tcpAddr)
-	checkError(err)
 	defer listener.Close()
-	
+	checkingError(err)
+	fmt.Println("Running in port 3233")
+
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			fmt.Printf("Error! %v", err.Error())
+			fmt.Printf("Error!! %v", err.Error())
 			continue
 		}
-		fmt.Printf("Conexión establecida con %v\n", conn.RemoteAddr())
+		fmt.Printf("Connection stablished from %v\n", conn.RemoteAddr())
 		go rpc.ServeConn(conn)
 	}
 }

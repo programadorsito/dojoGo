@@ -2,11 +2,15 @@ package main
 
 import "testing"
 
-func TestHello(t *testing.T)  {
+func TestHello(t *testing.T) {
+
 	got := hello()
-	want := "Hello world"
+	want := "HELLO WORLD!!"
 
 	if got != want {
+
 		t.Errorf("got %q want %q", got, want)
+
 	}
+
 }
